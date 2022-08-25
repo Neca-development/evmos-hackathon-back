@@ -39,6 +39,7 @@ pipeline {
           def GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1').toLowerCase()
           sh """
             DOCKERFILE=Dockerfile
+            DOCKER_ENV=development
 
             docker build . \
               -f \${DOCKERFILE} \
