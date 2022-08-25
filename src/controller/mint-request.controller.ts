@@ -57,10 +57,11 @@ export class MintRequestController {
     }) },)
   )
   async generateMintRequestList(
+
     @Param('daoAddress') daoAddress: string,
       @UploadedFile() file: Express.Multer.File
   ): Promise<void> {
-    this.mintRequestService.generateMintRequestList(file, daoAddress)
+    await this.mintRequestService.generateMintRequestList(file, daoAddress)
   }
 
   @UniDecorators.Post('', 'Create new mint request in database', false, Number)

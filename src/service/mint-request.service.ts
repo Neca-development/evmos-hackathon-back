@@ -38,11 +38,12 @@ export class MintRequestService {
   async generateMintRequestList(
     file: Express.Multer.File,
     daoAddress: string,
-  ): Promise<void> {
+  ): Promise<any> {
     const filePath = join(resolve(''), 'uploads', 'csv', file.originalname)
 
     if (!daoAddress.match(RegExps.ETH_ADDRESS)) {
-      await rm(filePath, { force: true }, () => {})
+      await rm(filePath, { force: true }, () => {
+      })
       throw new BadRequestException(ErrorMessages.ADDRESS_NOT_CORRECT)
     }
 
@@ -58,12 +59,11 @@ export class MintRequestService {
     rm(filePath, { force: true }, () => {})
 
     data.list.forEach((el) => {
-      console.log(el.userAddress);
-
       if (el.userAddress.match(RegExps.ETH_ADDRESS)) {
         this.mintRequestRepository.create(daoAddress, el.tokenType, el.userAddress)
       }
     })
+    return null
   }
 
   async getMintRequestListByUserAddress(userAddress: string): Promise<MintRequestDto[]> {
