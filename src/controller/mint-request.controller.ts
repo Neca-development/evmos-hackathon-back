@@ -47,6 +47,7 @@ export class MintRequestController {
     '/generate-list/:daoAddress',
     'Generate mint requests list from csv file',
     false,
+
   )
   @UseInterceptors(
     FileInterceptor('file', { storage: diskStorage({
@@ -80,7 +81,8 @@ export class MintRequestController {
   @UniDecorators.Post(
     '/success/:id',
     'Get signature to mint token',
-    false
+    false,
+    DaoEntity
   )
   async successMintRequest(@Param('id', ParseIntPipe) id: number): Promise<DaoEntity> {
     const res = this.mintRequestService.successMintRequest(id)
@@ -90,9 +92,11 @@ export class MintRequestController {
   @UniDecorators.Post(
     '/generate-signature/:mintRequestId',
     'Get signature to mint token',
-    false
+    false,
+    Promise<string>
+
   )
-  async signToken(@Param('mintRequestId', ParseIntPipe) id: number) {
+  async signToken(@Param('mintRequestId', ParseIntPipe) id: number): Promise<string> {
     const res = this.mintRequestService.generateSignature(id)
     return res
   }

@@ -10,6 +10,7 @@ import { UniDecorators } from '@unistory/route-decorators'
 import { diskStorage } from 'multer';
 import { GenerateDaoLinkDto } from 'src/dto/dao/generate-dao-link.dto';
 import { DaoService } from 'src/service/dao.service'
+import { GetDaoDto } from '../dto/dao/get-dao.dto'
 import { UserEntity } from '../data/entity/user.entiry'
 import { DaoEntity } from '../data/entity/dao.entity'
 import { AddUserToDaoDto } from '../dto/dao/add-user-to-dao.dto'
@@ -48,7 +49,8 @@ export class DaoController {
   @UniDecorators.Post(
     '/generate-link',
     'Generate ipfs link to dao info',
-    false
+    false,
+    Promise<string>
   )
   async generateDaoLink(@Body() dto: GenerateDaoLinkDto): Promise<string> {
     const res = this.daoService.generateDaoLink(dto)
@@ -58,7 +60,8 @@ export class DaoController {
   @UniDecorators.Post(
     '/create',
     'Create new DAO in db',
-    false
+    false,
+    GetDaoDto
   )
   async createDao(@Body() createDaoDto: CreateDaoDto): Promise<DaoEntity> {
     const res = await this.daoService.create(createDaoDto)
@@ -68,7 +71,8 @@ export class DaoController {
   @UniDecorators.Post(
     '/add-user',
     'Add user to dao',
-    false
+    false,
+    GetDaoDto
   )
   async addUserToDao(@Body() addUserToDaoDto: AddUserToDaoDto): Promise<DaoEntity> {
     const res = await this.daoService.addUser(addUserToDaoDto)
@@ -89,8 +93,7 @@ export class DaoController {
   @UniDecorators.Get(
     '',
     'Get all Daos',
-    false,
-
+    false
   )
   async getAll(): Promise<DaoEntity[]> {
     const res = await this.daoService.getAll()

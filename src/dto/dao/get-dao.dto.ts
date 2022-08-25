@@ -1,34 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, IsNotEmpty } from 'class-validator'
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator'
+import { UserEntity } from 'src/data/entity/user.entiry';
 
 export class GetDaoDto {
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-    name: string
+    id: number;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-    descr: string
+    ipfsUrl: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-    ava: string
+    contractAddress: string;
 
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-    lowImg: string
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-    mediumImg: string
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-    highImg: string
+    users: UserEntity[]
 }
