@@ -42,6 +42,8 @@ export class DaoController {
   async generateImagesLink(
     @UploadedFiles() images: { ava: Express.Multer.File, lowImg: Express.Multer.File, mediumImg: Express.Multer.File, highImg: Express.Multer.File }
   ): Promise<string[]> {
+    console.log(images);
+
     const res = this.daoService.generateImagesLink(images)
     return res
   }

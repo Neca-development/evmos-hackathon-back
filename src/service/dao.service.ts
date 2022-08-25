@@ -18,6 +18,8 @@ export class DaoService {
 
   async generateImagesLink(images: UploadImagesDto): Promise<string[]> {
     const imageLinks = await Promise.all(Object.values(images).map(async (file) => {
+      console.log(file);
+
       if (!file || !file[0].filename) {
         throw new BadRequestException(
           'Images not found'
