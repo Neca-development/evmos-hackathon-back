@@ -18,6 +18,11 @@ export class DaoService {
 
   async generateImagesLink(images: UploadImagesDto): Promise<string[]> {
     const imageLinks = await Promise.all(Object.values(images).map(async (file) => {
+      if (!file || !file[0].filename) {
+        throw new BadRequestException(
+          'Images not found'
+        )
+      }
       const path = this.fileService.getPath(file[0].filename)
 
       const buffer = readFileSync(path);
