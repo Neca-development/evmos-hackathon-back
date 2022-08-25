@@ -21,15 +21,15 @@ import { MintRequestService } from 'src/service/mint-request.service'
 export class MintRequestController {
   constructor(private readonly mintRequestService: MintRequestService) {}
 
-  @UniDecorators.Get(
-    '',
-    'Get total mint request list from database',
-    true,
-    MintRequestDto
-  )
-  async getMintRequestList(): Promise<MintRequestDto[]> {
-    return this.mintRequestService.getMintRequestList()
-  }
+  // @UniDecorators.Get(
+  //   '',
+  //   'Get total mint request list from database',
+  //   true,
+  //   MintRequestDto
+  // )
+  // async getMintRequestList(): Promise<MintRequestDto[]> {
+  //   return this.mintRequestService.getMintRequestList()
+  // }
 
   @UniDecorators.Get(
     '/:userAddress',
