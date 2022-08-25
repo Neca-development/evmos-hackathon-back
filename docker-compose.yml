@@ -11,8 +11,10 @@ services:
     <<: *logging
     image: ${REGISTRY_HOST}/${GIT_REPO_NAME}.${BRANCH_NAME}
     restart: unless-stopped
+    environment:
+      - DB_HOST=pg_db
     labels:
-      - "custom.label=${FRONT_REPO_NAME}-${FRONT_BRANCH_NAME}"
+      - "custom.label=${FRONT_REPO_NAME}.${FRONT_BRANCH_NAME}"
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
@@ -25,7 +27,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
