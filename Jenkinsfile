@@ -4,7 +4,7 @@ pipeline {
     REGISTRY_HOST = credentials('docker-registry-host')
     REGISTRY_HOST_REMOTE = credentials('docker-registry-domain')
     JENKINS_SERVER = credentials('jenkins-server')
-    SLACK_CHANNEL = ''
+    SLACK_CHANNEL = 'C03V4ET7DRQ'
     PRODUCTION_URL = ''
   }
 
