@@ -16,7 +16,6 @@ async function bootstrap() {
       .setDescription('Unistory nestJS starter API')
       .setVersion('1.0.1')
       .addTag('starter')
-      .setBasePath('api')
       .build();
 
     const document = SwaggerModule.createDocument(app, swaggerConfig);
