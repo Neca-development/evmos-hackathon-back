@@ -1,36 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsDefined, IsString } from 'class-validator'
+import { IsNotEmpty, IsString, Matches } from 'class-validator'
+import { RegExps } from 'src/infrastructure/const/reg-exps.constant'
 
 export class CreateDaoDto {
   @ApiProperty()
   @IsString()
-  @IsDefined()
-    name: string
+  @IsNotEmpty()
+  @Matches(RegExps.ETH_ADDRESS)
+    contractAddress: string
 
   @ApiProperty()
   @IsString()
-  @IsDefined()
-    descr: string
-
-  @ApiProperty()
-  @IsString()
-  @IsDefined()
-    ava: string
-
-  @ApiProperty()
-  @IsString()
-  @IsDefined()
-    lowImg: string
-
-  @ApiProperty()
-  @IsString()
-  @IsDefined()
-    mediumImg: string
-
-  @ApiProperty()
-  @IsString()
-  @IsDefined()
-    highImg: string
+  @IsNotEmpty()
+  @Matches(RegExps.IPFS_URL)
+    ipfsUrl: string
 }
 
 // {

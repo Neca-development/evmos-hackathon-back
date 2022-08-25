@@ -16,9 +16,9 @@ export class DaoRepository {
     this.repository = this.dataSource.getRepository(DaoEntity);
   }
 
-  async getAllUsersByDaoAddress(daoAddress: string): Promise<UserEntity[]> {
-    const dao = await this.repository.findOne({ where: { contractAddress: daoAddress } });
-    return dao.users
+  async getByAddress(daoAddress: string): Promise<DaoEntity> {
+    const dao = await this.repository.findOne({ where: { contractAddress: daoAddress }, relations: ['users'] });
+    return dao
   }
 
   async addUserToDao(user: UserEntity, daoAddress: string): Promise<DaoEntity> {
@@ -28,8 +28,13 @@ export class DaoRepository {
     return dao
   }
 
-  async findByAddress(address: string): Promise<DaoEntity> {
-    const res = await this.repository.findOne({ where: { contractAddress: address } })
-    return res
+  async create(contractAddress: string, ipfsUrl: string): Promise<DaoEntity> {
+    const dao = await this.repository.create({ contractAddress, ipfsUrl })
+    return dao
+  }
+
+  async getAll(): Promise<DaoEntity[]> {
+    const daos = await this.repository.find()
+    return daos
   }
 }

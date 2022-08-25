@@ -1,3 +1,4 @@
+import { UserRepository } from 'src/repository/user.repository'
 import { DaoService } from 'src/service/dao.service'
 import { MintRequestRepository } from 'src/repository/mint-request.repository';
 import {
@@ -16,6 +17,7 @@ import * as httpContext from 'express-http-context'
 
 import { MulterModule } from '@nestjs/platform-express';
 import { CsvModule } from 'nest-csv-parser';
+import { DaoRepository } from './repository/dao.repository'
 import { UserService } from './service/user.service'
 import { DaoController } from './controller/dao.controller'
 import { FileService } from './service/file.service'
@@ -45,7 +47,7 @@ import { UserController } from './controller/user.controller';
       useFactory: (config: ApiConfigService) => config.postgresConfig,
       inject: [ApiConfigService],
     }),
-    TypeOrmModule.forFeature([MintRequestRepository]),
+    TypeOrmModule.forFeature([MintRequestRepository, DaoRepository, UserRepository]),
 
     LoggerModule.forRootAsync({
       imports: [ApiConfigModule],
@@ -60,6 +62,8 @@ import { UserController } from './controller/user.controller';
     MintRequestService,
     MintRequestRepository,
     DaoService,
+    DaoRepository,
+    UserRepository,
     IpfsService,
     FileService,
     DaoService,

@@ -1,5 +1,17 @@
-export class AddUserToDaoDto {
-  userAddress: string
+import { ApiProperty } from '@nestjs/swagger'
+import { IsNotEmpty, IsString, Matches } from 'class-validator'
+import { RegExps } from 'src/infrastructure/const/reg-exps.constant'
 
-  daoAddress: string
+export class AddUserToDaoDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Matches(RegExps.ETH_ADDRESS)
+    userAddress: string
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Matches(RegExps.ETH_ADDRESS)
+    daoAddress: string
 }

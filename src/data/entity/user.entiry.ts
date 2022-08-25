@@ -5,6 +5,7 @@ import {
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
+
 } from 'typeorm';
 import { DaoEntity } from './dao.entity';
 
@@ -13,7 +14,7 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
     id: number;
 
-  @Column()
+  @Column({ unique: true })
     contractAddress: string;
 
   @ManyToMany(() => DaoEntity, (dao) => dao.users)

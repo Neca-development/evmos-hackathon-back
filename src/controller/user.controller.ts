@@ -1,24 +1,24 @@
 import {
-  Body,
+  Param,
 
 } from '@nestjs/common'
 
 import { UniDecorators } from '@unistory/route-decorators'
 
-import { DaoService } from 'src/service/dao.service'
-import { CreateDaoDto } from '../dto/dao/create-dao.dto'
+import { UserService } from 'src/service/user.service'
+import { DaoEntity } from '../data/entity/dao.entity'
 
 @UniDecorators.Controller('user')
 export class UserController {
-  constructor(private readonly daoService: DaoService) {}
+  constructor(private readonly userService: UserService) {}
 
   @UniDecorators.Get(
-    '/get-daos',
+    '/get-daos/:userAddress',
     'Get all daos for user',
     false
   )
-  async createDao(@Body() createDaoDto: CreateDaoDto): Promise<string> {
-    const res = this.daoService.createDao(createDaoDto)
+  async getDaos(@Param('userAddress') address: string): Promise<DaoEntity[]> {
+    const res = this.userService.getAllDaosByUserAddress(address)
     return res
   }
 }

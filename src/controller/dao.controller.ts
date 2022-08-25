@@ -1,6 +1,6 @@
-import { AddUserToDaoDto } from './../dto/dao/add-user-to-dao.dto'
 import {
   Body,
+  Param,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common'
@@ -8,8 +8,11 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express'
 
 import { UniDecorators } from '@unistory/route-decorators'
 import { diskStorage } from 'multer';
-import { UserEntity } from 'src/data/entity/user.entiry';
+import { GenerateDaoLinkDto } from 'src/dto/dao/generate-dao-link.dto';
 import { DaoService } from 'src/service/dao.service'
+import { UserEntity } from '../data/entity/user.entiry'
+import { DaoEntity } from '../data/entity/dao.entity'
+import { AddUserToDaoDto } from '../dto/dao/add-user-to-dao.dto'
 import { CreateDaoDto } from '../dto/dao/create-dao.dto'
 
 @UniDecorators.Controller('dao')
@@ -18,7 +21,7 @@ export class DaoController {
 
   @UniDecorators.Post(
     '/upload-nfts',
-    'Create link',
+    'Upload 4 images and get 4 urls to ipfs',
     false
 
   )
@@ -43,23 +46,54 @@ export class DaoController {
   }
 
   @UniDecorators.Post(
-    '/create-dao',
-    'Create DAO and get ipfs link',
+    '/generate-link',
+    'Generate ipfs link to dao info',
     false
   )
-  async createDao(@Body() createDaoDto: CreateDaoDto): Promise<string> {
-    const res = this.daoService.createDao(createDaoDto)
+  async generateDaoLink(@Body() dto: GenerateDaoLinkDto): Promise<string> {
+    const res = this.daoService.generateDaoLink(dto)
+    return res
+  }
+
+  @UniDecorators.Post(
+    '/create',
+    'Create new DAO in db',
+    false
+  )
+  async createDao(@Body() createDaoDto: CreateDaoDto): Promise<DaoEntity> {
+    const res = await this.daoService.create(createDaoDto)
     return res
   }
 
   @UniDecorators.Post(
     '/add-user',
-    'Get all daos for user',
+    'Add user to dao',
     false
   )
-  async addUserToDao(@Body() addUserToDaoDto: AddUserToDaoDto): Promise<string> {
+  async addUserToDao(@Body() addUserToDaoDto: AddUserToDaoDto): Promise<DaoEntity> {
     const res = await this.daoService.addUser(addUserToDaoDto)
-    
+    return res
+  }
+
+  @UniDecorators.Get(
+    '/get-users/:daoAddress',
+    'Get users from DAO',
+    false
+  )
+  async getUsers(@Param('daoAddress') address: string): Promise<UserEntity[]> {
+    const res = await this.daoService.getUsers(address)
+
+    return res
+  }
+
+  @UniDecorators.Get(
+    '',
+    'Get all Daos',
+    false,
+
+  )
+  async getAll(): Promise<DaoEntity[]> {
+    const res = await this.daoService.getAll()
     return res
   }
 }

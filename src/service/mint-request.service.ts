@@ -1,6 +1,7 @@
-import { UserRepository } from 'src/repository/user.repository'
+import { DaoEntity } from 'src/data/entity/dao.entity'
+import { DaoService } from 'src/service/dao.service'
 import { CreateMintRequestDto } from 'src/dto/mint-request/create-mint-request.dto';
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
 
 import { InjectMapper } from '@automapper/nestjs'
 import { Mapper } from '@automapper/core'
@@ -10,7 +11,9 @@ import { createReadStream, rm } from 'fs'
 import { CsvParser, ParsedData } from 'nest-csv-parser'
 import { join, resolve } from 'path';
 import { ethers } from 'ethers';
-import { DaoRepository } from '../repository/dao.repository'
+import { RegExps } from '../infrastructure/const/reg-exps.constant'
+import { ApiConfigService } from '../infrastructure/config/api-config.service'
+import { UserService } from './user.service'
 import { MintRequestDto } from '../dto/mint-request/mint-request.dto';
 import { MintRequestEntity } from '../data/entity/mint-request.entity'
 
@@ -21,8 +24,9 @@ export class MintRequestService {
     private readonly mapper: Mapper,
 
     private readonly mintRequestRepository: MintRequestRepository,
-    private readonly daoRepository: DaoRepository,
-    private readonly userRepository: UserRepository,
+    private readonly apiConfigService:ApiConfigService,
+    private readonly daoService: DaoService,
+    private readonly userService: UserService,
     private readonly csvParser: CsvParser
   ) {}
 
@@ -37,6 +41,11 @@ export class MintRequestService {
   ): Promise<void> {
     const filePath = join(resolve(''), 'uploads', 'csv', file.originalname)
 
+    if (!daoAddress.match(RegExps.ETH_ADDRESS)) {
+      await rm(filePath, { force: true }, () => {})
+      throw new BadRequestException(ErrorMessages.ADDRESS_NOT_CORRECT)
+    }
+
     const stream = createReadStream(filePath)
     const data: ParsedData<MintRequestEntity> = await this.csvParser.parse(
       stream,
@@ -48,13 +57,12 @@ export class MintRequestService {
 
     rm(filePath, { force: true }, () => {})
 
-    console.log(data);
-    console.log(data.list);
-
     data.list.forEach((el) => {
       console.log(el.userAddress);
 
-      this.mintRequestRepository.create(daoAddress, el.tokenType, el.userAddress)
+      if (el.userAddress.match(RegExps.ETH_ADDRESS)) {
+        this.mintRequestRepository.create(daoAddress, el.tokenType, el.userAddress)
+      }
     })
   }
 
@@ -86,21 +94,28 @@ export class MintRequestService {
 
   async generateSignature(mintRequestId: number): Promise<string> {
     const entity = await this.mintRequestRepository.getOneById(mintRequestId)
+    if (!entity) {
+      throw new BadRequestException(ErrorMessages.MINT_REQUEST_NOT_FOUND)
+    }
+    const wallet = new ethers.Wallet(this.apiConfigService.ipfsToken)
 
-    const wallet = new ethers.Wallet('')
-
-    const res = await wallet.signMessage(JSON.stringify(entity))
+    const res = await wallet.signMessage(`${entity.daoAddress}${entity.userAddress}${entity.tokenType}`)
 
     return res
   }
 
-  async successMintRequest(mintRequestId: number) {
+  async successMintRequest(mintRequestId: number): Promise<DaoEntity> {
     const mintRequest = await this.mintRequestRepository.getOneById(mintRequestId)
 
-    this.mintRequestRepository.remove(mintRequest)
+    if (mintRequest == null) {
+      throw new BadRequestException(ErrorMessages.ALREADY_MINTED)
+    }
 
-    const user = await this.userRepository.save(mintRequest.userAddress)
+    await this.userService.createUser(mintRequest.userAddress)
 
-    await this.daoRepository.addUserToDao(user, mintRequest.daoAddress)
+    const dao = await this.daoService.addUser({ userAddress: mintRequest.userAddress, daoAddress: mintRequest.daoAddress })
+    await this.mintRequestRepository.remove(mintRequest)
+
+    return dao
   }
 }

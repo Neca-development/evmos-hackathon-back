@@ -1,3 +1,4 @@
+import { AutoMap } from '@automapper/classes';
 import { TokenTypeEnum } from 'src/infrastructure/config/enums/token-type.enum'
 import {
   BaseEntity,
@@ -9,9 +10,11 @@ import {
 @Entity()
 export class MintRequestEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @AutoMap()
     id: number;
 
   @Column()
+  @AutoMap()
     userAddress: string;
 
   @Column({
@@ -19,8 +22,10 @@ export class MintRequestEntity extends BaseEntity {
     enum: TokenTypeEnum,
     default: TokenTypeEnum.low,
   })
+  @AutoMap()
     tokenType: TokenTypeEnum;
 
   @Column()
+  @AutoMap()
     daoAddress: string;
 }

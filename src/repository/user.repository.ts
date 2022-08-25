@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { UserEntity } from 'src/data/entity/user.entiry';
 import { DataSource, Repository } from 'typeorm';
-import { DaoEntity } from '../data/entity/dao.entity'
 
 @Injectable()
 export class UserRepository {
@@ -15,13 +14,18 @@ export class UserRepository {
     this.repository = this.dataSource.getRepository(UserEntity);
   }
 
-  async getAllDaosByUserAddress(userAddress: string): Promise<DaoEntity[]> {
-    const user = await this.repository.findOne({ where: { contractAddress: userAddress } });
-    return user.daos
+  async getByAddress(userAddress: string): Promise<UserEntity> {
+    const user = await this.repository.findOne({ where: { contractAddress: userAddress }, relations: ['daos'] });
+    return user
   }
 
-  async save(userAddress: string): Promise<UserEntity> {
-    const res = await this.repository.save({ contractAddress: userAddress })
+  async create(userAddress: string): Promise<UserEntity> {
+    const res = await this.repository.create({ contractAddress: userAddress }).save()
     return res
+  }
+
+  async delete(userAddress: string): Promise<any> {
+    const user = await this.getByAddress(userAddress)
+    return this.repository.delete({ contractAddress: user.contractAddress })
   }
 }

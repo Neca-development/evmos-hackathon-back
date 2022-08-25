@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ElasticSearchConfiguration } from '@unistory/nestjs-logger';
+import { DaoEntity } from '../../data/entity/dao.entity'
+import { UserEntity } from '../../data/entity/user.entiry'
 import { MintRequestEntity } from '../../data/entity/mint-request.entity'
 
 @Injectable()
@@ -42,7 +44,7 @@ export class ApiConfigService {
       username: this.configService.get<string>('DB_USERNAME'),
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_NAME'),
-      entities: [MintRequestEntity],
+      entities: [MintRequestEntity, DaoEntity, UserEntity],
       keepConnectionAlive: true,
       synchronize: true,
       migrationsRun: true,
@@ -52,5 +54,9 @@ export class ApiConfigService {
 
   get ipfsToken(): string {
     return this.configService.get<string>('IPFS_TOKEN')
+  }
+
+  get privateKey(): string {
+    return this.configService.get<string>('PRIVATE_KEY')
   }
 }

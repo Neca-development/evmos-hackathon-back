@@ -13,10 +13,10 @@ export class DaoEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
     id: number;
 
-  @Column()
+  @Column({ unique: true, })
     ipfsUrl: string;
 
-  @Column()
+  @Column({ unique: true })
     contractAddress: string;
 
   @ManyToMany(() => UserEntity, (user) => user.daos)
