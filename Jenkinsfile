@@ -59,41 +59,39 @@ pipeline {
     }
 
     stage('Start') {
-          agent any
+      agent any
 
-          when {
-            allOf {
-              not {
-                changeRequest()
-              }
-              anyOf {
-                branch 'main'
-              }
-            }
+      when {
+        allOf {
+          not {
+            changeRequest()
           }
-
-          environment {
-            FRONT_REPO_NAME = 'evmos-hackathon-front'
-            FRONT_BRANCH_NAME = 'main'
-          }
-
-          steps {
-            script {
-              def IMAGE_EXPOSED_PORT = 3000
-              def GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1').toLowerCase()
-              sh """
-                echo REGISTRY_HOST_REMOTE=${REGISTRY_HOST_REMOTE} >> .development.env
-                echo GIT_REPO_NAME=${GIT_REPO_NAME} >> .development.env
-                echo BRANCH_NAME=${BRANCH_NAME} >> .development.env
-                echo FRONT_REPO_NAME=${FRONT_REPO_NAME} >> .development.env
-                echo FRONT_BRANCH_NAME=${FRONT_BRANCH_NAME} >> .development.env
-
-                docker-compose --env-file .development.env up -d
-              """
-            }
-            notify_slack("Traefik backend startup success")
+          anyOf {
+            branch 'main'
           }
         }
+      }
+
+      environment {
+        FRONT_REPO_NAME = 'evmos-hackathon-front'
+        FRONT_BRANCH_NAME = 'main'
+      }
+
+      steps {
+        script {
+          def IMAGE_EXPOSED_PORT = 3000
+          def GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1').toLowerCase()
+          sh """
+            echo REGISTRY_HOST_REMOTE=${REGISTRY_HOST_REMOTE} >> .development.env
+            echo GIT_REPO_NAME=${GIT_REPO_NAME} >> .development.env
+            echo BRANCH_NAME=${BRANCH_NAME} >> .development.env
+            echo FRONT_REPO_NAME=${FRONT_REPO_NAME} >> .development.env
+            echo FRONT_BRANCH_NAME=${FRONT_BRANCH_NAME} >> .development.env
+
+            docker-compose --env-file .development.env up -d
+          """
+        }
+        notify_slack("Traefik backend startup success")
       }
     }
   }
