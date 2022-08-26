@@ -28,13 +28,13 @@ export class IpfsService {
       const file = new File([data], 'dao.json', { type: 'application/json' });
       const cid = await this.nftStorage.storeDirectory([file]);
 
-      return `${this.getFullUrl(cid)}/dao.json`
+      return `${this.getFullUrl(cid)}`
     }
 
     const blob = new Blob([data])
     const cid = await this.nftStorage.storeBlob(blob);
 
-    return `${this.getFullUrl(cid)}/dao.json`
+    return `${this.getFullUrl(cid)}`
   }
 
   private getFullUrl(cid: string): string {
