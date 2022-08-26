@@ -22,7 +22,7 @@ export class DaoEntity extends BaseEntity {
   @Column({ unique: true })
     contractAddress: string;
 
-  @Column()
+  @Column({ nullable: true })
     creatorAddress: string;
 
   @ManyToMany(() => UserEntity, (user) => user.daos)
