@@ -15,7 +15,7 @@ export class UserRepository {
   }
 
   async getByAddress(userAddress: string): Promise<UserEntity> {
-    const user = await this.repository.findOne({ where: { contractAddress: userAddress }, relations: ['daos', 'mintRequests'] });
+    const user = await this.repository.findOne({ where: { contractAddress: userAddress }, relations: ['daos'] });
     return user
   }
 
