@@ -94,4 +94,9 @@ export class DaoService {
     const daos = await this.daoRepository.getAll()
     return daos
   }
+
+  async getByAddress(daoAddress: string): Promise<DaoEntity> {
+    const dao = await this.daoRepository.getByAddress(daoAddress)
+    return dao
+  }
 }

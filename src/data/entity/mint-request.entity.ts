@@ -23,7 +23,7 @@ export class MintRequestEntity extends BaseEntity {
   @Column({
     type: 'enum',
     enum: TokenTypeEnum,
-    default: TokenTypeEnum.low,
+    default: TokenTypeEnum.LOW,
   })
   @AutoMap()
     tokenType: TokenTypeEnum;

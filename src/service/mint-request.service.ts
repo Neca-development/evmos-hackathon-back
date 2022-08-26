@@ -47,6 +47,12 @@ export class MintRequestService {
       throw new BadRequestException(ErrorMessages.ADDRESS_NOT_CORRECT)
     }
 
+    const dao = this.daoService.getByAddress(daoAddress)
+
+    if (!dao) {
+      throw new BadRequestException(ErrorMessages.DAO_NOT_FOUND)
+    }
+
     const stream = createReadStream(filePath)
     const data: ParsedData<MintRequestEntity> = await this.csvParser.parse(
       stream,
