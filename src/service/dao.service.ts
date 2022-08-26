@@ -76,7 +76,7 @@ export class DaoService {
 
     const users = await dao.users
     const existUser = await users.find(
-      (el) => el.contractAddress === dto.userAddress
+      (el) => el.walletAddress === dto.userAddress
     )
     if (existUser != null) {
       throw new BadRequestException('User already added in dao')

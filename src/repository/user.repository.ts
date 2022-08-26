@@ -15,17 +15,17 @@ export class UserRepository {
   }
 
   async getByAddress(userAddress: string): Promise<UserEntity> {
-    const user = await this.repository.findOne({ where: { contractAddress: userAddress }, relations: ['daos'] });
+    const user = await this.repository.findOne({ where: { walletAddress: userAddress }, relations: ['daos'] });
     return user
   }
 
   async create(userAddress: string): Promise<UserEntity> {
-    const res = await this.repository.create({ contractAddress: userAddress }).save()
+    const res = await this.repository.create({ walletAddress: userAddress }).save()
     return res
   }
 
   async delete(userAddress: string): Promise<any> {
     const user = await this.getByAddress(userAddress)
-    return this.repository.delete({ contractAddress: user.contractAddress })
+    return this.repository.delete({ walletAddress: user.walletAddress })
   }
 }
