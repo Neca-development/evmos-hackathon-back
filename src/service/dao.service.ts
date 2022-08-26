@@ -56,26 +56,33 @@ export class DaoService {
       await this.userService.createUser(dto.userAddress)
     }
 
-    const res = await (await this.daoRepository.create(dto.contractAddress, dto.ipfsUrl, dto.userAddress)).save()
+    await (await this.daoRepository.create(dto.contractAddress, dto.ipfsUrl, dto.userAddress)).save()
+
+    const res = await this.addUser({ daoAddress: dto.contractAddress, userAddress: dto.userAddress })
     return res
   }
 
   async addUser(dto: AddUserToDaoDto): Promise<DaoEntity> {
     const dao = await this.daoRepository.getByAddress(dto.daoAddress);
+    const user = await this.userService.getByAddress(dto.userAddress)
 
     if (!dao) {
-      throw new BadRequestException('Dao with such address is not exist')
+      throw new BadRequestException(ErrorMessages.DAO_NOT_FOUND)
+    }
+
+    if (!user) {
+      throw new BadRequestException(ErrorMessages.USER_NOT_FOUND)
     }
 
     const users = await dao.users
     const existUser = await users.find(
-      (user) => user.contractAddress === dto.userAddress
+      (el) => el.contractAddress === dto.userAddress
     )
     if (existUser != null) {
       throw new BadRequestException('User already added in dao')
     }
 
-    users.push()
+    users.push(user)
 
     dao.users = Promise.resolve(users)
 
