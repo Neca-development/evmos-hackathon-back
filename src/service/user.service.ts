@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
 import { UserRepository } from 'src/repository/user.repository'
+import { UserEntity } from 'src/data/entity/user.entiry'
 import { ErrorMessages } from '../infrastructure/const/error-messages.const'
 import { DaoEntity } from '../data/entity/dao.entity'
 
@@ -24,6 +25,11 @@ export class UserService {
       )
     }
     const res = await this.userRepository.create(userAddress)
+    return res
+  }
+
+  async getByAddress(address: string): Promise<UserEntity> {
+    const res = await this.userRepository.getByAddress(address)
     return res
   }
 }
