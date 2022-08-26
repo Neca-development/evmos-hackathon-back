@@ -84,7 +84,7 @@ export class DaoService {
 
     users.push(user)
 
-    dao.users = Promise.resolve(users)
+    dao.users = await Promise.resolve(users)
 
     await dao.save()
 

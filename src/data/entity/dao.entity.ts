@@ -27,7 +27,7 @@ export class DaoEntity extends BaseEntity {
 
   @ManyToMany(() => UserEntity, (user) => user.daos)
   @JoinTable()
-    users: Promise<UserEntity[]>
+    users: UserEntity[]
 
   @ApiProperty({ isArray: true, type: MintRequestEntity })
   @OneToMany(() => MintRequestEntity, (mintReq) => mintReq.dao)

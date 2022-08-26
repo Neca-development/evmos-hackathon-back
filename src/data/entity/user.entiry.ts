@@ -2,7 +2,6 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
 
@@ -18,6 +17,5 @@ export class UserEntity extends BaseEntity {
     contractAddress: string;
 
   @ManyToMany(() => DaoEntity, (dao) => dao.users)
-  @JoinTable()
-    daos: Promise<DaoEntity[]>
+    daos: DaoEntity[]
 }
