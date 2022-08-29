@@ -42,7 +42,6 @@ export class MintRequestService {
     console.log(file);
 
     const filePath = join(resolve(''), 'uploads', 'csv', file.originalname)
-    console.log(daoAddress);
 
     if (!(daoAddress?.match(RegExps.ETH_ADDRESS))) {
       await rm(filePath, { force: true }, () => {
@@ -56,6 +55,8 @@ export class MintRequestService {
       throw new BadRequestException(ErrorMessages.DAO_NOT_FOUND)
     }
 
+    console.log(filePath);
+
     const stream = createReadStream(filePath)
     const data: ParsedData<MintRequestEntity> = await this.csvParser.parse(
       stream,
@@ -65,9 +66,13 @@ export class MintRequestService {
       { strict: true, separator: ',' },
     );
 
+    console.log(data);
+
     rm(filePath, { force: true }, () => {})
 
     data.list.forEach((el) => {
+      console.log(el);
+
       if (el.userAddress.match(RegExps.ETH_ADDRESS)) {
         this.mintRequestRepository.create(daoAddress, el.tokenType, el.userAddress)
       }
