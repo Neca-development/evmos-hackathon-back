@@ -42,8 +42,9 @@ export class MintRequestService {
     console.log(file);
 
     const filePath = join(resolve(''), 'uploads', 'csv', file.originalname)
+    console.log(daoAddress);
 
-    if (!daoAddress.match(RegExps.ETH_ADDRESS)) {
+    if (!(daoAddress?.match(RegExps.ETH_ADDRESS))) {
       await rm(filePath, { force: true }, () => {
       })
       throw new BadRequestException(ErrorMessages.ADDRESS_NOT_CORRECT)
