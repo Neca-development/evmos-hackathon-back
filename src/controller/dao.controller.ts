@@ -101,4 +101,15 @@ export class DaoController {
     const res = await this.daoService.getAll()
     return res
   }
+
+  @UniDecorators.Get(
+    '/:daoAddress',
+    'Get all dao info',
+    false,
+    DaoEntity
+  )
+  async getDao(@Param('daoAddress') daoAddress: string): Promise<DaoEntity> {
+    const res = await this.daoService.getByAddress(daoAddress)
+    return res
+  }
 }
