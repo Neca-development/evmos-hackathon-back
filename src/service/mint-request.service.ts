@@ -39,6 +39,8 @@ export class MintRequestService {
     file: Express.Multer.File,
     daoAddress: string,
   ): Promise<any> {
+    console.log(file);
+
     const filePath = join(resolve(''), 'uploads', 'csv', file.originalname)
 
     if (!daoAddress.match(RegExps.ETH_ADDRESS)) {

@@ -53,7 +53,7 @@ export class MintRequestController {
     FileInterceptor('file', { storage: diskStorage({
       destination: './uploads/csv',
       filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        cb(null, file.originalname.replace(' ', '-'));
       },
     }) },)
   )
