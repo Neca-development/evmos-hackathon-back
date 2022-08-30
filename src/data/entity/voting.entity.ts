@@ -1,8 +1,9 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DaoEntity } from './dao.entity';
@@ -13,8 +14,12 @@ export class VotingEntity extends BaseEntity {
     id: number;
 
   @Column()
-    daoAddress: string;
+    ipfsUrl: string;
 
-  @ManyToMany(() => DaoEntity, (dao) => dao.users)
-    daos: DaoEntity[]
+  @Column()
+    smartContractId: number;
+
+  @ManyToOne(() => DaoEntity, (dao) => dao.votings)
+  @ApiProperty({ type: DaoEntity })
+    dao: DaoEntity
 }

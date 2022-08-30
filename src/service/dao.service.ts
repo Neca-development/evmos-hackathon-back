@@ -112,6 +112,7 @@ export class DaoService {
 
   async getByAddress(daoAddress: string): Promise<DaoEntity> {
     const dao = await this.daoRepository.getByAddress(daoAddress)
+
     return dao
   }
 }

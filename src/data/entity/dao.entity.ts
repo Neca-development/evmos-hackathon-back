@@ -10,6 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { MintRequestEntity } from './mint-request.entity'
 import { UserEntity } from './user.entiry';
+import { VotingEntity } from './voting.entity';
 
 @Entity()
 export class DaoEntity extends BaseEntity {
@@ -31,5 +32,9 @@ export class DaoEntity extends BaseEntity {
 
   @ApiProperty({ isArray: true, type: MintRequestEntity })
   @OneToMany(() => MintRequestEntity, (mintReq) => mintReq.dao)
-    mintRequests: () => MintRequestEntity[]
+    mintRequests: MintRequestEntity[]
+
+  @ApiProperty({ isArray: true, type: VotingEntity })
+  @OneToMany(() => VotingEntity, (voting) => voting.dao)
+    votings: VotingEntity[]
 }

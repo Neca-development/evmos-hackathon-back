@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { DaoEntity } from 'src/data/entity/dao.entity';
 import { VotingEntity } from 'src/data/entity/voting.entity';
 
 import { DataSource, Repository } from 'typeorm';
@@ -15,15 +16,15 @@ export class VotingRepository {
     this.repository = this.dataSource.getRepository(VotingEntity);
   }
 
-  async getByAddress(daoAddress: string): Promise<VotingEntity[]> {
-    const votings = await this.repository.find({ where: { daoAddress } });
+  async getById(id: number): Promise<VotingEntity[]> {
+    const votings = await this.repository.find({ where: { id } },);
     return votings
   }
 
-  // async create(userAddress: string): Promise<VotingEntity> {
-  //   const res = await this.repository.create({ walletAddress: userAddress }).save()
-  //   return res
-  // }
+  async create(ipfsUrl: string, smartContractId: number, dao: DaoEntity): Promise<VotingEntity> {
+    const res = await this.repository.create({ ipfsUrl, smartContractId, dao }).save()
+    return res
+  }
 
   // async delete(userAddress: string): Promise<any> {
   //   const user = await this.getByAddress(userAddress)
