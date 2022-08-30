@@ -34,5 +34,5 @@ export class MintRequestEntity extends BaseEntity {
 
   @ManyToOne(() => DaoEntity, (dao) => dao.mintRequests)
   @ApiProperty({ type: DaoEntity })
-    dao: DaoEntity
+    dao: () => DaoEntity
 }

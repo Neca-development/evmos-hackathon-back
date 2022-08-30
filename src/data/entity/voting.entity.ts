@@ -21,5 +21,5 @@ export class VotingEntity extends BaseEntity {
 
   @ManyToOne(() => DaoEntity, (dao) => dao.votings)
   @ApiProperty({ type: DaoEntity })
-    dao: DaoEntity
+    dao: ()=> DaoEntity
 }

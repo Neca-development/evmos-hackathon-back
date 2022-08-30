@@ -17,5 +17,5 @@ export class UserEntity extends BaseEntity {
     walletAddress: string;
 
   @ManyToMany(() => DaoEntity, (dao) => dao.users)
-    daos: DaoEntity[]
+    daos: ()=>DaoEntity[]
 }

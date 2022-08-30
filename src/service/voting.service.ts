@@ -15,7 +15,7 @@ export class VotingService {
   async getByDaoAddress(address: string): Promise<VotingEntity[]> {
     const dao = await this.daoService.getByAddress(address)
 
-    return dao.votings
+    return dao.votings()
   }
 
   async generateIpfs(dto: GenerateVotingDto): Promise<string> {

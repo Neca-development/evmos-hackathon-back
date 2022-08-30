@@ -13,7 +13,7 @@ export class UserService {
     if (!user) {
       throw new BadRequestException(ErrorMessages.USER_NOT_FOUND)
     }
-    const daos = await user.daos
+    const daos = await user.daos()
     return daos
   }
 
