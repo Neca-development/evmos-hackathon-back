@@ -106,9 +106,8 @@ export class MintRequestService {
       throw new BadRequestException(ErrorMessages.MINT_REQUEST_NOT_FOUND)
     }
     console.log(entity);
-    console.log(this.apiConfigService.ipfsToken);
 
-    const wallet = new ethers.Wallet(this.apiConfigService.ipfsToken)
+    const wallet = new ethers.Wallet(this.apiConfigService.privateKey)
 
     const res = await wallet.signMessage(`${entity.daoAddress}${entity.userAddress}${entity.tokenType}`)
 

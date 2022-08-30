@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ElasticSearchConfiguration } from '@unistory/nestjs-logger';
+import { VotingEntity } from 'src/data/entity/voting.entity';
 import { DaoEntity } from '../../data/entity/dao.entity'
 import { UserEntity } from '../../data/entity/user.entiry'
 import { MintRequestEntity } from '../../data/entity/mint-request.entity'
@@ -44,7 +45,7 @@ export class ApiConfigService {
       username: this.configService.get<string>('DB_USERNAME'),
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_NAME'),
-      entities: [MintRequestEntity, DaoEntity, UserEntity],
+      entities: [MintRequestEntity, DaoEntity, UserEntity, VotingEntity],
       keepConnectionAlive: true,
       synchronize: true,
       migrationsRun: true,

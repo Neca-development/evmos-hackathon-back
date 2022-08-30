@@ -17,6 +17,7 @@ import * as httpContext from 'express-http-context'
 
 import { MulterModule } from '@nestjs/platform-express';
 import { CsvModule } from 'nest-csv-parser';
+import { VotingService } from './service/voting.service'
 import { DaoRepository } from './repository/dao.repository'
 import { UserService } from './service/user.service'
 import { DaoController } from './controller/dao.controller'
@@ -32,6 +33,8 @@ import { MintRequestController } from './controller/mint-request.controller';
 import { MintRequestService } from './service/mint-request.service'
 import { IpfsService } from './service/ipfs.service';
 import { UserController } from './controller/user.controller';
+import { VotingController } from './controller/voting.controller';
+import { VotingRepository } from './repository/voting.repository';
 
 @Module({
   imports: [
@@ -55,7 +58,7 @@ import { UserController } from './controller/user.controller';
       inject: [ApiConfigService],
     }),
   ],
-  controllers: [MintRequestController, DaoController, UserController],
+  controllers: [MintRequestController, DaoController, UserController, VotingController],
   providers: [
     MapperService,
 
@@ -68,6 +71,8 @@ import { UserController } from './controller/user.controller';
     FileService,
     DaoService,
     UserService,
+    VotingService,
+    VotingRepository,
 
     {
       provide: APP_PIPE,

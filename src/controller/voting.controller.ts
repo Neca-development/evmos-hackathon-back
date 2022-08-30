@@ -9,7 +9,7 @@ import { VotingService } from 'src/service/voting.service'
 import { VotingEntity } from '../data/entity/voting.entity'
 
 @UniDecorators.Controller('voting')
-export class UserController {
+export class VotingController {
   constructor(private readonly votingService: VotingService) {}
 
   @UniDecorators.Get(
