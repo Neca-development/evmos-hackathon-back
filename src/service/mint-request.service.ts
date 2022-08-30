@@ -39,8 +39,6 @@ export class MintRequestService {
     file: Express.Multer.File,
     daoAddress: string,
   ): Promise<any> {
-    console.log(file);
-
     const filePath = join(resolve(''), 'uploads', 'csv', file.originalname)
 
     if (!(daoAddress?.match(RegExps.ETH_ADDRESS))) {
@@ -55,8 +53,6 @@ export class MintRequestService {
       throw new BadRequestException(ErrorMessages.DAO_NOT_FOUND)
     }
 
-    console.log(filePath);
-
     const stream = createReadStream(filePath)
     const data: ParsedData<MintRequestEntity> = await this.csvParser.parse(
       stream,
@@ -65,8 +61,6 @@ export class MintRequestService {
       null,
       { strict: true, separator: ',' },
     );
-
-    console.log(data);
 
     rm(filePath, { force: true }, () => {})
 
@@ -111,6 +105,9 @@ export class MintRequestService {
     if (!entity) {
       throw new BadRequestException(ErrorMessages.MINT_REQUEST_NOT_FOUND)
     }
+    console.log(entity);
+    console.log(this.apiConfigService.ipfsToken);
+
     const wallet = new ethers.Wallet(this.apiConfigService.ipfsToken)
 
     const res = await wallet.signMessage(`${entity.daoAddress}${entity.userAddress}${entity.tokenType}`)
