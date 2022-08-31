@@ -50,7 +50,7 @@ import { VotingRepository } from './repository/voting.repository';
       useFactory: (config: ApiConfigService) => config.postgresConfig,
       inject: [ApiConfigService],
     }),
-    TypeOrmModule.forFeature([MintRequestRepository, DaoRepository, UserRepository]),
+    TypeOrmModule.forFeature([MintRequestRepository, DaoRepository, UserRepository, VotingRepository]),
 
     LoggerModule.forRootAsync({
       imports: [ApiConfigModule],
@@ -60,19 +60,21 @@ import { VotingRepository } from './repository/voting.repository';
   ],
   controllers: [MintRequestController, DaoController, UserController, VotingController],
   providers: [
-    MapperService,
-
-    MintRequestService,
     MintRequestRepository,
-    DaoService,
+
     DaoRepository,
     UserRepository,
+
+    VotingRepository,
+
+    MapperService,
+    VotingService,
+    UserService,
+    DaoService,
+    DaoService,
     IpfsService,
     FileService,
-    DaoService,
-    UserService,
-    VotingService,
-    VotingRepository,
+    MintRequestService,
 
     {
       provide: APP_PIPE,
