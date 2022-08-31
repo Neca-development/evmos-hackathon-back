@@ -109,7 +109,7 @@ export class MintRequestService {
 
     const wallet = new ethers.Wallet(this.apiConfigService.privateKey)
 
-    const res = await wallet.signMessage(`${entity.daoAddress}${entity.userAddress}${entity.tokenType}`)
+    const res = await wallet.signMessage(`${entity.daoAddress.toLowerCase()}${entity.userAddress.toLowerCase()}${entity.tokenType}`)
 
     return res
   }
