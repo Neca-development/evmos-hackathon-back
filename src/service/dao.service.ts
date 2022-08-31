@@ -50,15 +50,7 @@ export class DaoService {
       throw new BadRequestException(ErrorMessages.DAO_ALREADY_EXIST)
     }
 
-    const existUser = await this.userService.getByAddress(dto.userAddress)
-
-    if (!existUser) {
-      await this.userService.createUser(dto.userAddress)
-    }
-
-    await (await this.daoRepository.create(dto.contractAddress, dto.ipfsUrl, dto.userAddress)).save()
-
-    const res = await this.addUser({ daoAddress: dto.contractAddress, userAddress: dto.userAddress })
+    const res = await (await this.daoRepository.create(dto.contractAddress, dto.ipfsUrl)).save()
     return res
   }
 

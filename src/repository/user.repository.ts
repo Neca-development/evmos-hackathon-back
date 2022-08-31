@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { DaoEntity } from 'src/data/entity/dao.entity';
 import { UserEntity } from 'src/data/entity/user.entiry';
 import { DataSource, Repository } from 'typeorm';
 
@@ -19,8 +20,8 @@ export class UserRepository {
     return user
   }
 
-  async create(userAddress: string): Promise<UserEntity> {
-    const res = await this.repository.create({ walletAddress: userAddress }).save()
+  async create(userAddress: string, dao: DaoEntity): Promise<UserEntity> {
+    const res = await this.repository.create({ walletAddress: userAddress, daos: [dao] }).save()
     return res
   }
 

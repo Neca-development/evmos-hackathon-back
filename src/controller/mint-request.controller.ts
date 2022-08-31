@@ -1,4 +1,3 @@
-import { DaoEntity } from 'src/data/entity/dao.entity'
 import {
   Body,
   Param,
@@ -78,16 +77,16 @@ export class MintRequestController {
     return this.mintRequestService.removeMintRequest(id)
   }
 
-  @UniDecorators.Post(
-    '/success/:id',
-    'Get signature to mint token',
-    false,
-    DaoEntity
-  )
-  async successMintRequest(@Param('id', ParseIntPipe) id: number): Promise<DaoEntity> {
-    const res = this.mintRequestService.successMintRequest(id)
-    return res
-  }
+  // @UniDecorators.Post(
+  //   '/success/:id',
+  //   'Get signature to mint token',
+  //   false,
+  //   DaoEntity
+  // )
+  // async successMintRequest(@Param('id', ParseIntPipe) id: number): Promise<DaoEntity> {
+  //   const res = this.mintRequestService.successMintRequest(id)
+  //   return res
+  // }
 
   @UniDecorators.Post(
     '/generate-signature/:mintRequestId',

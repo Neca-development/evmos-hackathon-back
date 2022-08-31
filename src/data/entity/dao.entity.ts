@@ -23,9 +23,6 @@ export class DaoEntity extends BaseEntity {
   @Column({ unique: true })
     contractAddress: string;
 
-  @Column({ nullable: true })
-    creatorAddress: string;
-
   @ManyToMany(() => UserEntity, (user) => user.daos)
   @JoinTable()
     users: UserEntity[]

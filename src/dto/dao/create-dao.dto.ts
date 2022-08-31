@@ -12,12 +12,6 @@ export class CreateDaoDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @Matches(RegExps.ETH_ADDRESS)
-    userAddress: string
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   @Matches(RegExps.IPFS_URL)
     ipfsUrl: string
 }

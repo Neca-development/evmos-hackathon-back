@@ -7,6 +7,7 @@ import { UniDecorators } from '@unistory/route-decorators'
 import { UserEntity } from 'src/data/entity/user.entiry'
 
 import { UserService } from 'src/service/user.service'
+import { CreateUserDto } from '../dto/user/create-user.dto'
 
 @UniDecorators.Controller('user')
 export class UserController {
@@ -20,6 +21,17 @@ export class UserController {
   )
   async getUser(@Param('userAddress') address: string): Promise<UserEntity> {
     const res = await this.userService.getByAddress(address)
+    return res
+  }
+
+  @UniDecorators.Post(
+    '/create',
+    'Create new user',
+    false,
+    UserEntity
+  )
+  async createUser(@Param('userAddress') dto: CreateUserDto): Promise<UserEntity> {
+    const res = await this.userService.createUser(dto)
     return res
   }
 }

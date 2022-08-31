@@ -28,8 +28,8 @@ export class DaoRepository {
     return dao
   }
 
-  async create(contractAddress: string, ipfsUrl: string, creatorAddress: string): Promise<DaoEntity> {
-    const dao = await this.repository.create({ contractAddress, ipfsUrl, creatorAddress })
+  async create(contractAddress: string, ipfsUrl: string): Promise<DaoEntity> {
+    const dao = await this.repository.create({ contractAddress, ipfsUrl })
     return dao
   }
 
