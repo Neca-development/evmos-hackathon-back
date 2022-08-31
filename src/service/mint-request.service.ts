@@ -1,4 +1,3 @@
-import { DaoEntity } from 'src/data/entity/dao.entity'
 import { DaoService } from 'src/service/dao.service'
 import { CreateMintRequestDto } from 'src/dto/mint-request/create-mint-request.dto';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
@@ -114,18 +113,18 @@ export class MintRequestService {
     return res
   }
 
-  async successMintRequest(mintRequestId: number): Promise<DaoEntity> {
-    const mintRequest = await this.mintRequestRepository.getOneById(mintRequestId)
+  // async successMintRequest(mintRequestId: number): Promise<DaoEntity> {
+  //   const mintRequest = await this.mintRequestRepository.getOneById(mintRequestId)
 
-    if (mintRequest == null) {
-      throw new BadRequestException(ErrorMessages.ALREADY_MINTED)
-    }
+  //   if (mintRequest == null) {
+  //     throw new BadRequestException(ErrorMessages.ALREADY_MINTED)
+  //   }
 
-    await this.userService.createUser(mintRequest.userAddress)
+  //   await this.userService.createUser(mintRequest.userAddress)
 
-    const dao = await this.daoService.addUser({ userAddress: mintRequest.userAddress, daoAddress: mintRequest.daoAddress })
-    await this.mintRequestRepository.remove(mintRequest)
+  //   const dao = await this.daoService.addUser({ userAddress: mintRequest.userAddress, daoAddress: mintRequest.daoAddress })
+  //   await this.mintRequestRepository.remove(mintRequest)
 
-    return dao
-  }
+  //   return dao
+  // }
 }
