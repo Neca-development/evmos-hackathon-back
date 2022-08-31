@@ -34,7 +34,7 @@ export class DaoController {
     ], { storage: diskStorage({
       destination: './uploads/',
       filename: (req, file, cb) => {
-        cb(null, file.originalname.replace(' ', '-').concat(file.fieldname));
+        cb(null, file.fieldname.concat(file.originalname).replace(' ', '-'));
       },
     }) })
   )
