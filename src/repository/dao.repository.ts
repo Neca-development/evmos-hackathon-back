@@ -17,7 +17,7 @@ export class DaoRepository {
   }
 
   async getByAddress(daoAddress: string): Promise<DaoEntity> {
-    const dao = await this.repository.findOneOrFail({ where: { contractAddress: daoAddress }, relations: ['users', 'votings'] });
+    const dao = await this.repository.findOne({ where: { contractAddress: daoAddress }, relations: ['users', 'votings'] });
     return dao
   }
 
