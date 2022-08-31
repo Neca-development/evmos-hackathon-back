@@ -11,7 +11,6 @@ import { diskStorage } from 'multer';
 import { GenerateDaoLinkDto } from 'src/dto/dao/generate-dao-link.dto';
 import { DaoService } from 'src/service/dao.service'
 import { GetDaoDto } from '../dto/dao/get-dao.dto'
-import { UserEntity } from '../data/entity/user.entiry'
 import { DaoEntity } from '../data/entity/dao.entity'
 import { AddUserToDaoDto } from '../dto/dao/add-user-to-dao.dto'
 import { CreateDaoDto } from '../dto/dao/create-dao.dto'
@@ -78,17 +77,6 @@ export class DaoController {
   )
   async addUserToDao(@Body() addUserToDaoDto: AddUserToDaoDto): Promise<DaoEntity> {
     const res = await this.daoService.addUser(addUserToDaoDto)
-    return res
-  }
-
-  @UniDecorators.Get(
-    '/get-users/:daoAddress',
-    'Get users from DAO',
-    false
-  )
-  async getUsers(@Param('daoAddress') address: string): Promise<UserEntity[]> {
-    const res = await this.daoService.getUsers(address)
-
     return res
   }
 

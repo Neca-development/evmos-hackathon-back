@@ -17,7 +17,7 @@ export class VotingRepository {
   }
 
   async getById(id: number): Promise<VotingEntity[]> {
-    const votings = await this.repository.find({ where: { id } },);
+    const votings = await this.repository.find({ where: { id }, relations: ['dao'] });
     return votings
   }
 
