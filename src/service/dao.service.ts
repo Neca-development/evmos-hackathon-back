@@ -1,5 +1,5 @@
 import { GenerateDaoLinkDto } from 'src/dto/dao/generate-dao-link.dto'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common'
 import { readFileSync, unlink } from 'fs';
 import { extname } from 'path'
 import { DaoEntity } from 'src/data/entity/dao.entity';
@@ -15,7 +15,13 @@ import { IpfsService } from './ipfs.service'
 
 @Injectable()
 export class DaoService {
-  constructor(private readonly ipfsService: IpfsService, private readonly fileService: FileService, private readonly userService: UserService, private readonly daoRepository: DaoRepository) {}
+  constructor(
+    private readonly ipfsService: IpfsService,
+    private readonly fileService: FileService,
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
+    private readonly daoRepository: DaoRepository
+  ) {}
 
   async generateImagesLink(images: UploadImagesDto): Promise<string[]> {
     const imageLinks = await Promise.all(Object.values(images).map(async (file) => {

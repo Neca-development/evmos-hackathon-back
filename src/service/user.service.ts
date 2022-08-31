@@ -1,6 +1,6 @@
 import { UserRepository } from 'src/repository/user.repository'
 import { UserEntity } from 'src/data/entity/user.entiry'
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { Injectable, BadRequestException, forwardRef, Inject } from '@nestjs/common'
 import { CreateUserDto } from '../dto/user/create-user.dto'
 import { ErrorMessages } from '../infrastructure/const/error-messages.const'
 import { DaoEntity } from '../data/entity/dao.entity'
@@ -8,7 +8,11 @@ import { DaoService } from './dao.service'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository, private readonly daoService: DaoService) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    @Inject(forwardRef(() => DaoService))
+    private readonly daoService: DaoService,
+  ) {}
 
   async getAllDaosByUserAddress(userAddress: string): Promise<DaoEntity[]> {
     const user = await this.userRepository.getByAddress(userAddress)

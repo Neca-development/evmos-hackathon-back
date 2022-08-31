@@ -1,5 +1,3 @@
-import { UserRepository } from 'src/repository/user.repository'
-import { DaoService } from 'src/service/dao.service'
 import { MintRequestRepository } from 'src/repository/mint-request.repository';
 import {
   MiddlewareConsumer,
@@ -35,6 +33,8 @@ import { IpfsService } from './service/ipfs.service';
 import { UserController } from './controller/user.controller';
 import { VotingController } from './controller/voting.controller';
 import { VotingRepository } from './repository/voting.repository';
+import { UserRepository } from './repository/user.repository';
+import { DaoService } from './service/dao.service';
 
 @Module({
   imports: [
@@ -70,7 +70,6 @@ import { VotingRepository } from './repository/voting.repository';
     MapperService,
     VotingService,
     UserService,
-    DaoService,
     DaoService,
     IpfsService,
     FileService,
