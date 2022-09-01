@@ -10,6 +10,7 @@ import { UniDecorators } from '@unistory/route-decorators'
 import { diskStorage } from 'multer';
 import { GenerateDaoLinkDto } from 'src/dto/dao/generate-dao-link.dto';
 import { DaoService } from 'src/service/dao.service'
+import { GenerateDaoLinksResponseDto } from 'src/dto/dao/generate-dao-links-res.dto';
 import { GetDaoDto } from '../dto/dao/get-dao.dto'
 import { DaoEntity } from '../data/entity/dao.entity'
 import { AddUserToDaoDto } from '../dto/dao/add-user-to-dao.dto'
@@ -49,11 +50,11 @@ export class DaoController {
 
   @UniDecorators.Post(
     '/generate-link',
-    'Generate ipfs link to dao info',
-    false,
-    Promise<string>
+    'Generate 4 ipfs links to dao info and 3 tokens meta',
+    true,
+    Promise<GenerateDaoLinksResponseDto>
   )
-  async generateDaoLink(@Body() dto: GenerateDaoLinkDto): Promise<string> {
+  async generateDaoLink(@Body() dto: GenerateDaoLinkDto): Promise<GenerateDaoLinksResponseDto> {
     const res = this.daoService.generateDaoLink(dto)
     return res
   }

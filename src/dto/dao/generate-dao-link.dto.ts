@@ -15,6 +15,11 @@ export class GenerateDaoLinkDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+    symbol: string
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
     ava: string
 
   @ApiProperty()

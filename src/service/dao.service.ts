@@ -1,8 +1,10 @@
+import { TokenTypeEnum } from 'src/infrastructure/config/enums/token-type.enum'
 import { GenerateDaoLinkDto } from 'src/dto/dao/generate-dao-link.dto'
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common'
 import { readFileSync, unlink } from 'fs';
 import { extname } from 'path'
 import { DaoEntity } from 'src/data/entity/dao.entity';
+import { GenerateDaoLinksResponseDto } from '../dto/dao/generate-dao-links-res.dto'
 import { UserService } from './user.service'
 import { UserEntity } from '../data/entity/user.entiry'
 import { ErrorMessages } from '../infrastructure/const/error-messages.const'
@@ -43,10 +45,40 @@ export class DaoService {
     return imageLinks
   }
 
-  async generateDaoLink(createDaoDto: GenerateDaoLinkDto): Promise<string> {
-    const string = JSON.stringify(createDaoDto)
-    const res = await this.ipfsService.loadJson(string)
-    return res
+  async generateDaoLink(createDaoDto: GenerateDaoLinkDto): Promise<GenerateDaoLinksResponseDto> {
+    const daoInfo = JSON.stringify(createDaoDto)
+    const lowTokenInfo = JSON.stringify({
+      name: createDaoDto.name,
+      symbol: createDaoDto.symbol,
+      descr: createDaoDto.descr,
+      type: TokenTypeEnum.LOW,
+      img: createDaoDto.lowImg
+    })
+    const mediumTokenInfo = JSON.stringify({
+      name: createDaoDto.name,
+      symbol: createDaoDto.symbol,
+      descr: createDaoDto.descr,
+      type: TokenTypeEnum.MEDIUM,
+      img: createDaoDto.mediumImg
+    })
+    const highTokenInfo = JSON.stringify({
+      name: createDaoDto.name,
+      symbol: createDaoDto.symbol,
+      descr: createDaoDto.descr,
+      type: TokenTypeEnum.HIGH,
+      img: createDaoDto.highImg
+    })
+
+    const dao = await this.ipfsService.loadJson(daoInfo)
+    const lowToken = await this.ipfsService.loadJson(lowTokenInfo)
+    const mediumToken = await this.ipfsService.loadJson(mediumTokenInfo)
+    const highToken = await this.ipfsService.loadJson(highTokenInfo)
+    return {
+      dao,
+      lowToken,
+      mediumToken,
+      highToken
+    }
   }
 
   async create(dto: CreateDaoDto): Promise<DaoEntity> {
