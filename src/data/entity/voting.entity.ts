@@ -16,7 +16,7 @@ export class VotingEntity extends BaseEntity {
   @Column()
     ipfsUrl: string;
 
-  @Column({ unique: true })
+  @Column()
     smartContractId: number;
 
   @ManyToOne(() => DaoEntity, (dao) => dao.votings)

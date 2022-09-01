@@ -26,6 +26,10 @@ export class VotingService {
 
   async create(dto: CreateVotingDto): Promise<VotingEntity> {
     const dao = await this.daoService.getByAddress(dto.daoAddress)
+    const existVoting = dao.votings().some((voting) => voting.smartContractId === dto.smartContractId)
+    if (existVoting) {
+      throw new Error('Voting already exists')
+    }
     const res = await this.votingRepository.create(dto.ipfsUrl, dto.smartContractId, dao)
     return res
   }
