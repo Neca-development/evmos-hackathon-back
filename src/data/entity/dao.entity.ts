@@ -33,5 +33,5 @@ export class DaoEntity extends BaseEntity {
 
   @ApiProperty({ isArray: true, type: VotingEntity })
   @OneToMany(() => VotingEntity, (voting) => voting.dao)
-    votings: () => VotingEntity[]
+    votings: Promise<VotingEntity[]>
 }

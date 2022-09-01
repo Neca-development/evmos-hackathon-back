@@ -15,7 +15,7 @@ export class VotingService {
   async getByDaoAddress(address: string): Promise<VotingEntity[]> {
     const dao = await this.daoService.getByAddress(address)
 
-    return dao.votings()
+    return dao.votings
   }
 
   async generateIpfs(dto: GenerateVotingDto): Promise<string> {
@@ -26,7 +26,8 @@ export class VotingService {
 
   async create(dto: CreateVotingDto): Promise<VotingEntity> {
     const dao = await this.daoService.getByAddress(dto.daoAddress)
-    const existVoting = dao.votings().some((voting) => voting.smartContractId === dto.smartContractId)
+    const votings = await dao.votings
+    const existVoting = votings.some((voting) => voting.smartContractId === dto.smartContractId)
     if (existVoting) {
       throw new Error('Voting already exists')
     }
