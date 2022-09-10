@@ -52,7 +52,7 @@ export class DaoController {
     '/generate-link',
     'Generate 4 ipfs links to dao info and 3 tokens meta',
     true,
-    Promise<GenerateDaoLinksResponseDto>
+    GenerateDaoLinksResponseDto
   )
   async generateDaoLink(@Body() dto: GenerateDaoLinkDto): Promise<GenerateDaoLinksResponseDto> {
     const res = this.daoService.generateDaoLink(dto)

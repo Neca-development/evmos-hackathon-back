@@ -69,15 +69,11 @@ export class DaoService {
       img: createDaoDto.highImg
     })
 
-    const dao = await this.ipfsService.loadJson(daoInfo)
-    const lowToken = await this.ipfsService.loadJson(lowTokenInfo)
-    const mediumToken = await this.ipfsService.loadJson(mediumTokenInfo)
-    const highToken = await this.ipfsService.loadJson(highTokenInfo)
+    const daoMeta = await this.ipfsService.loadJson([daoInfo, lowTokenInfo, mediumTokenInfo, highTokenInfo])
+    console.log(daoMeta);
+
     return {
-      dao,
-      lowToken,
-      mediumToken,
-      highToken
+      daoMeta
     }
   }
 

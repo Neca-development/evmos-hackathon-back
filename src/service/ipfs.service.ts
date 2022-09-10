@@ -23,10 +23,18 @@ export class IpfsService {
     return `${this.getFullUrl(cid)}/nft${type}`
   }
 
-  async loadJson(data: string | Buffer): Promise<string> {
+  async loadJson(data: string | Buffer | string[]): Promise<string> {
     if (data instanceof Buffer) {
       const file = new File([data], 'dao.json', { type: 'application/json' });
       const cid = await this.nftStorage.storeDirectory([file]);
+
+      return `${this.getFullUrl(cid)}`
+    }
+
+    if (Array.isArray(data)) {
+      const files = data.map((el, index) => new File([el], `${index || 'dao'}.json`, { type: 'application/json' }))
+
+      const cid = await this.nftStorage.storeDirectory(files);
 
       return `${this.getFullUrl(cid)}`
     }
