@@ -31,7 +31,7 @@ export class UserService {
       )
     }
     const dao = await this.daoService.getByAddress(dto.daoAddress)
-    if (dao != null) {
+    if (!dao) {
       throw new BadRequestException(
         ErrorMessages.DAO_NOT_FOUND
       )
