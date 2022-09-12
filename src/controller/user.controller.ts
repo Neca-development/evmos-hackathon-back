@@ -31,7 +31,7 @@ export class UserController {
     false,
     UserEntity
   )
-  async createUser(@Body('userAddress') dto: CreateUserDto): Promise<UserEntity> {
+  async createUser(@Body() dto: CreateUserDto): Promise<UserEntity> {
     const res = await this.userService.createUser(dto)
     return res
   }
