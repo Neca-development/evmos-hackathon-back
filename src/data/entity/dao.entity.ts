@@ -17,7 +17,7 @@ export class DaoEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
     id: number;
 
-  @Column({ unique: true, })
+  @Column({ unique: true })
     ipfsUrl: string;
 
   @Column({ unique: true })
